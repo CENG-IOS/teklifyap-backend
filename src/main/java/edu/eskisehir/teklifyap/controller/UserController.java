@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/user")
 @AllArgsConstructor
 public class UserController {
+
     private final UserService userService;
     private final MaterialService materialService;
 
