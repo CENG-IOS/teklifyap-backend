@@ -18,24 +18,24 @@ public class OfferMaterialController {
     private final OfferMaterialService offerMaterialService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(offerMaterialService.getAll());
     }
 
-    @PostMapping("/make")
-    public ResponseEntity<?> makeOffer(@RequestBody OfferMaterial offerMaterial){
+    @PostMapping
+    public ResponseEntity<?> makeOffer(@RequestBody OfferMaterial offerMaterial) {
         offerMaterialService.makeOffer(offerMaterial);
-        return ResponseEntity.ok(new SuccessMessage("made","",""));
+        return ResponseEntity.ok(new SuccessMessage("made", "", ""));
     }
 
     @PostMapping("/makes")
-    public ResponseEntity<?> makeOffers(@RequestBody List<OfferMaterial> offerMaterials){
+    public ResponseEntity<?> makeOffers(@RequestBody List<OfferMaterial> offerMaterials) {
         offerMaterialService.makeOffers(offerMaterials);
-        return ResponseEntity.ok(new SuccessMessage("made","",""));
+        return ResponseEntity.ok(new SuccessMessage("made", "", ""));
     }
 
-    @PostMapping("/getMaterialsByOffer")
-    public ResponseEntity<?> getMaterialsByOffer(@RequestBody LinkedHashMap<String,Integer> id){
+    @GetMapping("/getMaterialsByOffer")
+    public ResponseEntity<?> getMaterialsByOffer(@RequestBody LinkedHashMap<String, Integer> id) {
         return ResponseEntity.ok(offerMaterialService.getMaterialsByOffer(id.get("id")));
     }
 

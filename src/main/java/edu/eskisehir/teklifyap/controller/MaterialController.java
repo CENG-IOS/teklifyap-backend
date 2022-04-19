@@ -16,19 +16,26 @@ import java.util.List;
 @CrossOrigin
 @AllArgsConstructor
 public class MaterialController {
+
     private final MaterialService materialService;
+
+    @GetMapping
+    public ResponseEntity<Material> getOne(HttpServletRequest request, @RequestParam("material") int mid) throws Exception {
+
+        return ResponseEntity.ok(materialService.findById(mid));
+    }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Material>> getAll() {
         return ResponseEntity.ok(materialService.getAll());
     }
 
-    @PostMapping("/getMaterialByUser")
+    @GetMapping("/getMaterialByUser")
     public List<Material> getMaterials(@RequestBody User user) {
         return materialService.getMaterials(user.getId());
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> add(HttpServletRequest request, @RequestBody Material material) {
         materialService.add(material);
         return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));
@@ -40,13 +47,13 @@ public class MaterialController {
         return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> delete(HttpServletRequest request, @RequestBody String deleted) throws Exception {
         materialService.delete(deleted);
         return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> update(HttpServletRequest request, @RequestBody Material material) {
         materialService.update(material);
         return ResponseEntity.ok(new SuccessMessage("updated", request.getServletPath(), ""));

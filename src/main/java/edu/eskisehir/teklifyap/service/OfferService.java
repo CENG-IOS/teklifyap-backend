@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 @AllArgsConstructor
 public class OfferService {
+
     private final OfferDao offerDao;
 
     public List<Offer> getAll() {
@@ -35,5 +35,9 @@ public class OfferService {
         System.out.println(offer.toString());
         offerDao.save(offer);
         return offer.getId();
+    }
+
+    public Offer findById(int fid) throws Exception {
+        return offerDao.findById(fid).orElseThrow(() -> new Exception("OfferNotFoundException"));
     }
 }
