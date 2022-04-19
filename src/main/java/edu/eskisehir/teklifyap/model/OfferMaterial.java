@@ -14,7 +14,6 @@ public class OfferMaterial {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
     @ManyToOne
@@ -26,5 +25,5 @@ public class OfferMaterial {
     private Offer offer;
 
     @Column(name = "offer_material_price_per_unit")
-    private int offer_material_price_per_unit;
+    private int pricePerUnit;
 }

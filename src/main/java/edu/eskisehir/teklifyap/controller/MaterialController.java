@@ -1,11 +1,10 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.Material;
-import edu.eskisehir.teklifyap.model.SuccessMessage;
+import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.model.User;
 import edu.eskisehir.teklifyap.service.MaterialService;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.json.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class MaterialController {
 
     @PostMapping("/getMaterialByUser")
     public List<Material> getMaterials(@RequestBody User user) {
-        return materialService.getMaterials(user.getUser_id());
+        return materialService.getMaterials(user.getId());
     }
 
     @PostMapping("/add")

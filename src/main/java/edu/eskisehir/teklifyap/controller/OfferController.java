@@ -1,7 +1,7 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.Offer;
-import edu.eskisehir.teklifyap.model.SuccessMessage;
+import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.service.OfferService;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.json.ParseException;

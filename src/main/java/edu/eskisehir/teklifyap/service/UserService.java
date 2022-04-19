@@ -19,11 +19,11 @@ public class UserService {
     public int add(User user) {
         User created;
         created = this.userDao.save(user);
-        return created.getUser_id();
+        return created.getId();
     }
 
     public User getUserProfile(User user) {
-        return new User(userDao.getById(user.getUser_id()).getUser_id(), userDao.getById(user.getUser_id()).getUser_name(), userDao.getById(user.getUser_id()).getUser_surname(), userDao.getById(user.getUser_id()).getUser_email(), userDao.getById(user.getUser_id()).getUser_password(), userDao.getById(user.getUser_id()).getUser_creation_date());
+        return new User(userDao.getById(user.getId()).getId(), userDao.getById(user.getId()).getName(), userDao.getById(user.getId()).getSurname(), userDao.getById(user.getId()).getMail(), userDao.getById(user.getId()).getPassword(), userDao.getById(user.getId()).getCreationDate());
     }
 
     public User getByid(int id) {

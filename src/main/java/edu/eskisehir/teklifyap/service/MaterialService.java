@@ -1,6 +1,7 @@
 package edu.eskisehir.teklifyap.service;
 
 import edu.eskisehir.teklifyap.model.Material;
+import edu.eskisehir.teklifyap.model.response.ShortMaterialResponse;
 import edu.eskisehir.teklifyap.repository.MaterialDao;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class MaterialService {
         JSONParser jsonParser = new JSONParser(id);
         BigInteger parsedID = (BigInteger) jsonParser.object().get("deleted");
         Material material = materialDao.getById(parsedID.intValue());
-        material.setMaterial_is_verified((short) 0);
+        material.setDeleted(false);
         materialDao.save(material);
         materialDao.delete(findById(Integer.parseInt(id)));
     }
@@ -52,4 +53,7 @@ public class MaterialService {
     }
 
 
+    public List<ShortMaterialResponse> findByUserId(int uid) {
+        return materialDao.findByUserId(uid);
+    }
 }
