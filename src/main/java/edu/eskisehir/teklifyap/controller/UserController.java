@@ -1,20 +1,25 @@
 package edu.eskisehir.teklifyap.controller;
 
-import edu.eskisehir.teklifyap.model.SuccessMessage;
+import edu.eskisehir.teklifyap.model.Material;
+import edu.eskisehir.teklifyap.model.response.ShortMaterialResponse;
+import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.model.User;
+import edu.eskisehir.teklifyap.service.MaterialService;
 import edu.eskisehir.teklifyap.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final MaterialService materialService;
 
     @GetMapping("/getAll")
     public ResponseEntity<List<User>> getAll() {
@@ -44,7 +49,7 @@ public class UserController {
     @PostMapping("/updateInformation")
     public ResponseEntity<?> save(@RequestBody User user) {
         userService.save(user);
-        return ResponseEntity.ok(new SuccessMessage("saved","",""));
+        return ResponseEntity.ok(new SuccessMessage("saved", "", ""));
     }
 
     @PostMapping("/assignList")
@@ -59,7 +64,16 @@ public class UserController {
 
     @PostMapping("/getFullName")
     public ResponseEntity<String> getFullName(@RequestBody User user) {
-        User a = userService.getByid(user.getUser_id());
+        User a = userService.getByid(user.getId());
         return ResponseEntity.ok(a.FullName());
+    }
+
+    @GetMapping("/getMaterials")
+    public ResponseEntity<List<ShortMaterialResponse>> getMaterials(HttpServletRequest request, @RequestParam("user") int uid) {
+
+        List<ShortMaterialResponse> materialList = materialService.findByUserId(uid);
+
+        return ResponseEntity.ok(materialList);
+
     }
 }

@@ -1,4 +1,4 @@
-package edu.eskisehir.teklifyap.model;
+package edu.eskisehir.teklifyap.model.response;
 
 import java.time.LocalDateTime;
 

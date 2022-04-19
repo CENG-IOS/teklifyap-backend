@@ -1,7 +1,7 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.OfferMaterial;
-import edu.eskisehir.teklifyap.model.SuccessMessage;
+import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.service.OfferMaterialService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

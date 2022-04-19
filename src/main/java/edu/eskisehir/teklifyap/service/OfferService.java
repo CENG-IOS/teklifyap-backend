@@ -27,13 +27,13 @@ public class OfferService {
 
     public void updateStatus(int id, String status) {
         Offer offer = offerDao.getById(id);
-        offer.setOffer_status(status);
+        offer.setStatus(status);
         offerDao.save(offer);
     }
 
     public int makeOffer(Offer offer) {
         System.out.println(offer.toString());
         offerDao.save(offer);
-        return offer.getOffer_id();
+        return offer.getId();
     }
 }
