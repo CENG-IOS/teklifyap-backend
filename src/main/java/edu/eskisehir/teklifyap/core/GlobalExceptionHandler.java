@@ -1,4 +1,4 @@
-package edu.eskisehir.teklifyap.controller;
+package edu.eskisehir.teklifyap.core;
 
 import edu.eskisehir.teklifyap.model.response.ExceptionDetailResponse;
 import lombok.extern.slf4j.Slf4j;
