@@ -1,6 +1,7 @@
 package edu.eskisehir.teklifyap.service;
 
 import edu.eskisehir.teklifyap.config.security.PasswordEncoder;
+import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
 import edu.eskisehir.teklifyap.model.User;
 import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
 import edu.eskisehir.teklifyap.repository.UserDao;
