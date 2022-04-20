@@ -6,10 +6,8 @@ import edu.eskisehir.teklifyap.repository.MaterialDao;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.ParseException;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Member;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -23,12 +21,12 @@ public class MaterialService {
         return materialDao.findById(mid).orElseThrow(() -> new Exception("MaterialNotFoundException"));
     }
 
-    public List<Material> getAll() {
-        return materialDao.findAll();
+    public List<ShortMaterialResponse> getAll() {
+        return materialDao.findAllShortMaterial();
     }
 
-    public List<Material> getMaterials(int id) {
-        return materialDao.takeMaterialsByUserID(id);
+    public List<ShortMaterialResponse> getMaterials(int id) {
+        return materialDao.findByUserId(id);
     }
 
     public void delete(String id) throws Exception {
@@ -40,7 +38,7 @@ public class MaterialService {
         materialDao.delete(findById(Integer.parseInt(id)));
     }
 
-    public Material add(Material material) {
+    public Material save(Material material) {
         return materialDao.save(material);
     }
 

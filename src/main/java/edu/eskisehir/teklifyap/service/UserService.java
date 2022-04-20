@@ -1,6 +1,7 @@
 package edu.eskisehir.teklifyap.service;
 
 import edu.eskisehir.teklifyap.config.security.PasswordEncoder;
+import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
 import edu.eskisehir.teklifyap.model.User;
 import edu.eskisehir.teklifyap.repository.UserDao;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +25,8 @@ public class UserService implements UserDetailsService {
         return userDao.findByMail(mail);
     }
 
-    public List<User> getAll() {
-        return userDao.findAll();
+    public List<ShortUserResponse> findAllShortUser() {
+        return userDao.findAllShortUser();
     }
 
     public int add(User user) {
@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
         return new User(userDao.getById(user.getId()).getId(), userDao.getById(user.getId()).getName(), userDao.getById(user.getId()).getSurname(), userDao.getById(user.getId()).getMail(), userDao.getById(user.getId()).getPassword(), userDao.getById(user.getId()).getCreationDate());
     }
 
-    public User getByid(int id) {
+    public User getById(int id) {
         return this.userDao.getById(id);
     }
 
@@ -60,5 +60,9 @@ public class UserService implements UserDetailsService {
         user.setCreationDate(LocalDateTime.now());
         user.setConfirmed(false);
         return userDao.save(user);
+    }
+
+    public User findById(int uid) throws Exception {
+        return userDao.findById(uid).orElseThrow(() -> new Exception("UserNotFoundException"));
     }
 }
