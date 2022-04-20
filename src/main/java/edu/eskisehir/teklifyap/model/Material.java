@@ -1,12 +1,15 @@
 package edu.eskisehir.teklifyap.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import edu.eskisehir.teklifyap.model.request.AddingMaterialRequest;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -14,11 +17,18 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "material")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Material implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "material_id")
-    private int id;
+
+    public Material(AddingMaterialRequest request) {
+        this.name = request.getName();
+        this.unit = request.getUnit();
+        this.pricePerUnit = request.getPricePerUnit();
+        this.deleted = false;
+        this.fixed = false;
+    }
 
     public Material(int id, String name, String unit, boolean deleted, boolean fixed, int pricePerUnit) {
         this.id = id;
@@ -29,8 +39,14 @@ public class Material implements Serializable {
         this.pricePerUnit = pricePerUnit;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "material_id")
+    private int id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @Column(name = "material_name")

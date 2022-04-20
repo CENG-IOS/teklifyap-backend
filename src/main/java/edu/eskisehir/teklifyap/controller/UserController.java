@@ -1,13 +1,14 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.Material;
+import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
+import edu.eskisehir.teklifyap.model.request.AddingMaterialRequest;
 import edu.eskisehir.teklifyap.model.response.ShortMaterialResponse;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.model.User;
 import edu.eskisehir.teklifyap.service.MaterialService;
 import edu.eskisehir.teklifyap.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,8 @@ public class UserController {
     private final MaterialService materialService;
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<User>> getAll() {
-        return ResponseEntity.ok(userService.getAll());
+    public ResponseEntity<List<ShortUserResponse>> getAll() {
+        return ResponseEntity.ok(userService.findAllShortUser());
     }
 
 //    @PostMapping("/getByEmailAndPassword")
@@ -60,21 +61,31 @@ public class UserController {
 
     @GetMapping("/getAll/{id}")
     public ResponseEntity<User> getByUserID(@PathVariable int id) {
-        return ResponseEntity.ok(userService.getByid(id));
+        return ResponseEntity.ok(userService.getById(id));
     }
 
     @PostMapping("/getFullName")
     public ResponseEntity<String> getFullName(@RequestBody User user) {
-        User a = userService.getByid(user.getId());
+        User a = userService.getById(user.getId());
         return ResponseEntity.ok(a.FullName());
     }
 
     @GetMapping("/getMaterials")
     public ResponseEntity<List<ShortMaterialResponse>> getMaterials(HttpServletRequest request, @RequestParam("user") int uid) {
-
         List<ShortMaterialResponse> materialList = materialService.findByUserId(uid);
-
         return ResponseEntity.ok(materialList);
+    }
 
+    @PostMapping("/addMaterial")
+    public ResponseEntity<SuccessMessage> addMaterialToUser(HttpServletRequest request, @RequestParam("user") int uid,
+                                                            @RequestBody AddingMaterialRequest material) throws Exception {
+
+        Material created = new Material(material);
+        User user = userService.findById(uid);
+
+        created.setUser(user);
+        materialService.save(created);
+
+        return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));
     }
 }

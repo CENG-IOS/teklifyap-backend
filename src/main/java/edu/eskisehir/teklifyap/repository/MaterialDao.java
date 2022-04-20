@@ -12,6 +12,9 @@ public interface MaterialDao extends JpaRepository<Material, Integer> {
     @Query(value = "select * from material where user_id = :id and material_is_verified = 1", nativeQuery = true)
     List<Material> takeMaterialsByUserID(@Param("id") Integer id);
 
-    @Query("select new edu.eskisehir.teklifyap.model.response.ShortMaterialResponse(m.id,m.name,m.unit,m.deleted,m.fixed,m.pricePerUnit) from Material m")
+    @Query("select new edu.eskisehir.teklifyap.model.response.ShortMaterialResponse(m) from Material m where m.user.id = :uid")
     List<ShortMaterialResponse> findByUserId(int uid);
+
+    @Query("select new edu.eskisehir.teklifyap.model.response.ShortMaterialResponse(m) from Material m")
+    List<ShortMaterialResponse> findAllShortMaterial();
 }
