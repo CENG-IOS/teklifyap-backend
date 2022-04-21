@@ -15,5 +15,4 @@ public class ExceptionDetailResponse {
     private final Integer status;
     private final String error;
     private final String path;
-
 }
