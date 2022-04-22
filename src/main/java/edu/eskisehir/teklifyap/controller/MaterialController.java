@@ -5,6 +5,7 @@ import edu.eskisehir.teklifyap.model.response.ShortMaterialResponse;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.model.User;
 import edu.eskisehir.teklifyap.service.MaterialService;
+import edu.eskisehir.teklifyap.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 public class MaterialController {
 
     private final MaterialService materialService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<Material> getOne(HttpServletRequest request, @RequestParam("material") int mid) throws Exception {
@@ -37,22 +39,28 @@ public class MaterialController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(HttpServletRequest request, @RequestBody Material material) {
+    public ResponseEntity<?> add(HttpServletRequest request, @RequestBody Material material, @RequestParam("user") int uid) throws Exception {
+        User user = userService.findById(uid);
+        material.setUser(user);
         materialService.save(material);
         return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));
     }
 
-    @PostMapping("/adds")
-    public ResponseEntity<?> adds(HttpServletRequest request, @RequestBody List<Material> materials) {
-        materialService.adds(materials);
-        return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));
-    }
+   /* @DeleteMapping
+    public ResponseEntity<?> delete(HttpServletRequest request, @RequestBody String deleted, @RequestParam("user") int uid) throws Exception {
+        User user = userService.findById(uid);
 
-    @DeleteMapping
-    public ResponseEntity<?> delete(HttpServletRequest request, @RequestBody String deleted) throws Exception {
         materialService.delete(deleted);
         return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
-    }
+    }*/
+
+   /* @DeleteMapping
+    public ResponseEntity<?> delete(HttpServletRequest request, @RequestBody Material material, @RequestParam("user") int uid) throws Exception {
+        User user = userService.findById(uid);
+        System.out.println(material.getId());
+        /*materialService.delete(mid);*/
+       // return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
+   // }*/
 
     @PutMapping
     public ResponseEntity<?> update(HttpServletRequest request, @RequestBody Material material) {
