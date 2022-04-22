@@ -30,6 +30,7 @@ public class MaterialService {
     }
 
     public void delete(String id) throws Exception {
+        System.out.println(id);
         JSONParser jsonParser = new JSONParser(id);
         BigInteger parsedID = (BigInteger) jsonParser.object().get("deleted");
         Material material = materialDao.getById(parsedID.intValue());
@@ -42,16 +43,13 @@ public class MaterialService {
         return materialDao.save(material);
     }
 
-    public List<Material> adds(List<Material> materials) {
-        return materialDao.saveAll(materials);
-    }
-
     public Material update(Material material) {
         return materialDao.save(material);
     }
 
 
     public List<ShortMaterialResponse> findByUserId(int uid) {
+
         return materialDao.findByUserId(uid);
     }
 }
