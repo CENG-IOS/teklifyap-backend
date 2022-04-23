@@ -30,12 +30,7 @@ public class MaterialService {
     }
 
     public void delete(String id) throws Exception {
-        System.out.println(id);
-        JSONParser jsonParser = new JSONParser(id);
-        BigInteger parsedID = (BigInteger) jsonParser.object().get("deleted");
-        Material material = materialDao.getById(parsedID.intValue());
-        material.setDeleted(false);
-        materialDao.save(material);
+
         materialDao.delete(findById(Integer.parseInt(id)));
     }
 
