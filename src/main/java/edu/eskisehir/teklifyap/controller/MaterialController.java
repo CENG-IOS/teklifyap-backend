@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/material")
@@ -46,27 +48,17 @@ public class MaterialController {
         return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));
     }
 
-   /* @DeleteMapping
-    public ResponseEntity<?> delete(HttpServletRequest request, @RequestBody String deleted, @RequestParam("user") int uid) throws Exception {
-        User user = userService.findById(uid);
-
-        materialService.delete(deleted);
-        return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
-    }*/
-
-   /* @DeleteMapping
-    public ResponseEntity<?> delete(HttpServletRequest request, @RequestBody Material material, @RequestParam("user") int uid) throws Exception {
-        User user = userService.findById(uid);
-        System.out.println(material.getId());
-        /*materialService.delete(mid);*/
-       // return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
-   // }*/
-
+   @DeleteMapping
+    public ResponseEntity<?> delete(HttpServletRequest request, @RequestParam("material") String mid, @RequestParam("user") int uid) throws Exception {
+        materialService.delete(mid);
+       return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
+    }
     @PutMapping
-    public ResponseEntity<?> update(HttpServletRequest request, @RequestBody Material material) {
+    public ResponseEntity<?> update(HttpServletRequest request, @RequestBody Material material,@RequestParam("user") int uid) throws Exception {
+        User user = userService.findById(uid);
+        material.setUser(user);
         materialService.update(material);
         return ResponseEntity.ok(new SuccessMessage("updated", request.getServletPath(), ""));
-
     }
 
 }
