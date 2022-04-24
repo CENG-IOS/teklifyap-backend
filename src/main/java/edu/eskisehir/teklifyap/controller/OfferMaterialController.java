@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 @CrossOrigin
 @AllArgsConstructor
 public class OfferMaterialController {
+
     private final OfferMaterialService offerMaterialService;
 
     @GetMapping("/getAll")

@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class MaterialWithPrice {
 
-    private int materialId;
+    private int id;
     private double pricePerUnit;
 }
