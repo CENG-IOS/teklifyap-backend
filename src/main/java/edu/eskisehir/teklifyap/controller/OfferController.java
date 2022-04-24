@@ -1,6 +1,5 @@
 package edu.eskisehir.teklifyap.controller;
 
-import edu.eskisehir.teklifyap.model.Material;
 import edu.eskisehir.teklifyap.model.Offer;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.service.OfferService;
@@ -36,7 +35,7 @@ public class OfferController {
     }
 
     @PutMapping
-    public ResponseEntity<SuccessMessage> updateStatus(@RequestParam("id") int id, @RequestParam("status") String status) {
+    public ResponseEntity<SuccessMessage> updateStatus(@RequestParam("id") int id, @RequestParam("status") Offer.OfferStatus status) {
         offerService.updateStatus(id, status);
         return ResponseEntity.ok(new SuccessMessage("updated","",""));
     }
