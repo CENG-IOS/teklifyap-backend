@@ -1,10 +1,14 @@
 package edu.eskisehir.teklifyap.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,6 +17,9 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Table(name = "offer")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Offer implements Serializable {
 
     @Id
@@ -24,6 +31,11 @@ public class Offer implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "material", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<OfferMaterial> materials;
+
     @Column(name = "offer_title")
     private String title;
 
@@ -31,13 +43,13 @@ public class Offer implements Serializable {
     private String companyName;
 
     @Column(name = "offer_status")
-    private String status;
+    private OfferStatus status;
 
     @Column(name = "offer_total_price")
-    private int totalPrice;
+    private double totalPrice;
 
     @Column(name = "offer_date")
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "offer_profit_rate")
     private int profitRate;
@@ -47,4 +59,8 @@ public class Offer implements Serializable {
 
     @Column(name = "offer_kdv_price")
     private double kdv;
+
+    public enum OfferStatus {
+        PENDING, POSITIVE, NEGATIVE
+    }
 }
