@@ -25,7 +25,7 @@ public class OfferService {
         return offerDao.getOffersByUserID(a);
     }
 
-    public void updateStatus(int id, String status) {
+    public void updateStatus(int id, Offer.OfferStatus status) {
         Offer offer = offerDao.getById(id);
         offer.setStatus(status);
         offerDao.save(offer);
