@@ -12,6 +12,12 @@ import javax.persistence.*;
 @Table(name = "offer_material")
 public class OfferMaterial {
 
+    public OfferMaterial(Material material, Offer offer, double pricePerUnit) {
+        this.material = material;
+        this.offer = offer;
+        this.pricePerUnit = pricePerUnit;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,5 +31,5 @@ public class OfferMaterial {
     private Offer offer;
 
     @Column(name = "offer_material_price_per_unit")
-    private int pricePerUnit;
+    private double pricePerUnit;
 }

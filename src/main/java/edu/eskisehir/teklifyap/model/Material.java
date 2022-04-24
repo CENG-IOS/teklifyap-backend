@@ -2,6 +2,7 @@ package edu.eskisehir.teklifyap.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.eskisehir.teklifyap.model.request.AddingMaterialRequest;
 import lombok.*;
@@ -9,6 +10,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -48,6 +50,11 @@ public class Material implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
+
+    @OneToMany(mappedBy = "material", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @ToString.Exclude
+    private List<OfferMaterial> materials;
 
     @Column(name = "material_name")
     private String name;

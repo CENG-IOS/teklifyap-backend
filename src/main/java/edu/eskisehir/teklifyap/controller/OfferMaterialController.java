@@ -1,14 +1,14 @@
 package edu.eskisehir.teklifyap.controller;
 
-import edu.eskisehir.teklifyap.model.OfferMaterial;
+import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.service.OfferMaterialService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/offerMaterial")
@@ -23,15 +23,11 @@ public class OfferMaterialController {
     }
 
     @PostMapping
-    public ResponseEntity<?> makeOffer(@RequestBody OfferMaterial offerMaterial) {
-        offerMaterialService.makeOffer(offerMaterial);
-        return ResponseEntity.ok(new SuccessMessage("made", "", ""));
-    }
+    public ResponseEntity<?> makeOffer(HttpServletRequest request, @RequestBody MakingOfferRequest makingOfferRequest,
+                                       @RequestParam("user") int uid) throws Exception {
 
-    @PostMapping("/makes")
-    public ResponseEntity<?> makeOffers(@RequestBody List<OfferMaterial> offerMaterials) {
-        offerMaterialService.makeOffers(offerMaterials);
-        return ResponseEntity.ok(new SuccessMessage("made", "", ""));
+        offerMaterialService.makeOffer(makingOfferRequest, uid);
+        return ResponseEntity.ok(new SuccessMessage("done", request.getServletPath(), ""));
     }
 
     @GetMapping("/getMaterialsByOffer")
