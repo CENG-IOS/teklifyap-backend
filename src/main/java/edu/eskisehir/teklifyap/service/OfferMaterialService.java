@@ -5,7 +5,6 @@ import edu.eskisehir.teklifyap.model.Offer;
 import edu.eskisehir.teklifyap.model.OfferMaterial;
 import edu.eskisehir.teklifyap.model.User;
 import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
-import edu.eskisehir.teklifyap.repository.MaterialDao;
 import edu.eskisehir.teklifyap.repository.OfferDao;
 import edu.eskisehir.teklifyap.repository.OfferMaterialDao;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ public class OfferMaterialService {
     private final OfferMaterialDao offerMaterialDao;
     private final OfferDao offerDao;
     private final UserService userService;
-    private final MaterialDao materialDao;
+    private final MaterialService materialService;
 
     public List<OfferMaterial> getAll() {
         return offerMaterialDao.findAll();
@@ -45,18 +44,25 @@ public class OfferMaterialService {
 
         List<OfferMaterial> offerMaterials = new LinkedList<>();
         Offer finalOffer = offer;
+        Offer finalOffer1 = offer;
         request.getMaterials().parallelStream().forEach(materialWithPrice -> {
-            Material material = materialDao.findById(materialWithPrice.getMaterialId()).get();
+
+            Material material = null;
+            try {
+                material = materialService.findById(materialWithPrice.getId());
+            } catch (Exception e) {
+                offerDao.delete(finalOffer1);
+            }
             OfferMaterial offerMaterial = new OfferMaterial(material, finalOffer, materialWithPrice.getPricePerUnit());
             offerMaterials.add(offerMaterial);
         });
+
         saveAll(offerMaterials);
 
     }
 
     public List<OfferMaterial> getMaterialsByOffer(int id) {
-        List<OfferMaterial> offerMaterial = offerMaterialDao.getMaterialsByOffer(id);
-        return offerMaterial;
+        return offerMaterialDao.getMaterialsByOffer(id);
     }
 
     public List<OfferMaterial> saveAll(List<OfferMaterial> offerMaterials) {

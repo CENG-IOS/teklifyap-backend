@@ -1,11 +1,9 @@
 package edu.eskisehir.teklifyap.controller;
 
-import edu.eskisehir.teklifyap.model.Material;
-import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
-import edu.eskisehir.teklifyap.model.request.AddingMaterialRequest;
-import edu.eskisehir.teklifyap.model.response.ShortMaterialResponse;
-import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.model.User;
+import edu.eskisehir.teklifyap.model.response.ShortMaterialResponse;
+import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
+import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.service.MaterialService;
 import edu.eskisehir.teklifyap.service.UserService;
 import lombok.AllArgsConstructor;
@@ -76,16 +74,4 @@ public class UserController {
         return ResponseEntity.ok(materialList);
     }
 
-    @PostMapping("/addMaterial")
-    public ResponseEntity<SuccessMessage> addMaterialToUser(HttpServletRequest request, @RequestParam("user") int uid,
-                                                            @RequestBody AddingMaterialRequest material) throws Exception {
-
-        Material created = new Material(material);
-        User user = userService.findById(uid);
-
-        created.setUser(user);
-        materialService.save(created);
-
-        return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));
-    }
 }
