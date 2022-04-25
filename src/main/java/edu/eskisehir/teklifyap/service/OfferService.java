@@ -1,10 +1,10 @@
 package edu.eskisehir.teklifyap.service;
 
-import edu.eskisehir.teklifyap.repository.OfferDao;
 import edu.eskisehir.teklifyap.model.Offer;
+import edu.eskisehir.teklifyap.model.ShortOffer;
+import edu.eskisehir.teklifyap.repository.OfferDao;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.ParseException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,25 +19,16 @@ public class OfferService {
         return offerDao.findAll();
     }
 
-    public List<Offer> getOffersByUser(String id) throws ParseException {
-        JSONParser jsonParser = new JSONParser(id);
-        int a = Integer.parseInt((String) jsonParser.parseObject().get("id"));
-        return offerDao.getOffersByUserID(a);
-    }
+    public List<ShortOffer> getOffersByUser(int uid, PageRequest page) {
 
-    public void updateStatus(int id, Offer.OfferStatus status) {
-        Offer offer = offerDao.getById(id);
-        offer.setStatus(status);
-        offerDao.save(offer);
-    }
-
-    public int makeOffer(Offer offer) {
-        System.out.println(offer.toString());
-        offerDao.save(offer);
-        return offer.getId();
+        return offerDao.getOffersByUserID(uid);
     }
 
     public Offer findById(int fid) throws Exception {
         return offerDao.findById(fid).orElseThrow(() -> new Exception("OfferNotFoundException"));
+    }
+
+    public Offer save(Offer offer) {
+        return offerDao.save(offer);
     }
 }

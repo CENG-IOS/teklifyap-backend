@@ -2,16 +2,15 @@ package edu.eskisehir.teklifyap.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.eskisehir.teklifyap.model.request.AddingMaterialRequest;
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ public class Material implements Serializable {
         this.fixed = false;
     }
 
-    public Material(int id, String name, String unit, boolean deleted, boolean fixed, int pricePerUnit) {
+    public Material(int id, String name, String unit, boolean deleted, boolean fixed, double pricePerUnit) {
         this.id = id;
         this.name = name;
         this.unit = unit;
@@ -51,11 +50,6 @@ public class Material implements Serializable {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "material", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @ToString.Exclude
-    private List<OfferMaterial> materials;
-
     @Column(name = "material_name")
     private String name;
 
@@ -69,5 +63,5 @@ public class Material implements Serializable {
     private boolean fixed;
 
     @Column(name = "material_price_per_unit")
-    private int pricePerUnit;
+    private double pricePerUnit;
 }

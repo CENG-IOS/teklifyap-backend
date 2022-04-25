@@ -1,6 +1,9 @@
 package edu.eskisehir.teklifyap.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -12,10 +15,15 @@ import javax.persistence.*;
 @Table(name = "offer_material")
 public class OfferMaterial {
 
-    public OfferMaterial(Material material, Offer offer, double pricePerUnit) {
+    public OfferMaterial(Material material, Offer offer, double unitPrice) {
         this.material = material;
         this.offer = offer;
-        this.pricePerUnit = pricePerUnit;
+        this.unitPrice = unitPrice;
+    }
+
+    public OfferMaterial(int id, double unitPrice) {
+        this.id = id;
+        this.unitPrice = unitPrice;
     }
 
     @Id
@@ -30,6 +38,6 @@ public class OfferMaterial {
     @JoinColumn(name = "offer_id")
     private Offer offer;
 
-    @Column(name = "offer_material_price_per_unit")
-    private double pricePerUnit;
+    @Column(name = "unit_price")
+    private double unitPrice;
 }

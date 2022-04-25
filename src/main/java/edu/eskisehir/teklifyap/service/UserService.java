@@ -1,8 +1,8 @@
 package edu.eskisehir.teklifyap.service;
 
 import edu.eskisehir.teklifyap.config.security.PasswordEncoder;
-import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
 import edu.eskisehir.teklifyap.model.User;
+import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
 import edu.eskisehir.teklifyap.repository.UserDao;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,8 +20,8 @@ public class UserService implements UserDetailsService {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
 
-    public Optional<UserDetails> findByMail(String mail) {
-        return userDao.findByMail(mail);
+    public User findByMail(String mail) throws Exception {
+        return userDao.findByMail(mail).orElseThrow(() -> new Exception("UserNotFoundException"));
     }
 
     public List<ShortUserResponse> findAllShortUser() {
@@ -53,8 +52,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User create(User user) throws Exception {
-        Optional<UserDetails> userDetails = findByMail(user.getMail());
-        if (userDetails.isPresent())
+        User userDetails = null;
+        try {
+            userDetails = findByMail(user.getMail());
+        } catch (Exception ignored) {
+        }
+        if (userDetails != null)
             throw new Exception("ExistingUserException");
         user.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
         user.setCreationDate(LocalDateTime.now());

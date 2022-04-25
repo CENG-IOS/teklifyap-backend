@@ -6,5 +6,5 @@ import lombok.Data;
 public class MaterialWithPrice {
 
     private int id;
-    private double pricePerUnit;
+    private double unitPrice;
 }
