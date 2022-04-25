@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("/api/offerMaterial")
@@ -18,11 +17,6 @@ public class OfferMaterialController {
 
     private final OfferMaterialService offerMaterialService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(offerMaterialService.getAll());
-    }
-
     @PostMapping
     public ResponseEntity<?> makeOffer(HttpServletRequest request, @RequestBody MakingOfferRequest makingOfferRequest,
                                        @RequestParam("user") int uid) throws Exception {
@@ -31,9 +25,11 @@ public class OfferMaterialController {
         return ResponseEntity.ok(new SuccessMessage("done", request.getServletPath(), ""));
     }
 
+    //teklifin detaylarını görüntülemeye çalışırken kullanılacak. Tekliflerim sayfasında inceleye bastığında çalışır.
     @GetMapping("/getMaterialsByOffer")
-    public ResponseEntity<?> getMaterialsByOffer(@RequestBody LinkedHashMap<String, Integer> id) {
-        return ResponseEntity.ok(offerMaterialService.getMaterialsByOffer(id.get("id")));
+    public ResponseEntity<?> getMaterialsByOffer(@RequestParam("offer") int oid) {
+
+        return ResponseEntity.ok(offerMaterialService.getMaterialsByOffer(oid));
     }
 
 }

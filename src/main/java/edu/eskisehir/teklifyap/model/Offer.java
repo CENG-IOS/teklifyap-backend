@@ -33,8 +33,7 @@ public class Offer implements Serializable {
 
     @OneToMany(mappedBy = "material", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    @ToString.Exclude
-    private List<OfferMaterial> materials;
+    private List<OfferMaterial> materialList;
 
     @Column(name = "offer_title")
     private String title;

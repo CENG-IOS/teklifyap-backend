@@ -24,5 +24,5 @@ public class ShortMaterialResponse {
     private String unit;
     private boolean deleted;
     private boolean fixed;
-    private int pricePerUnit;
+    private double pricePerUnit;
 }

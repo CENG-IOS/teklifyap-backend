@@ -1,8 +1,10 @@
 package edu.eskisehir.teklifyap.service;
 
 import edu.eskisehir.teklifyap.config.security.JwtTokenUtil;
-import edu.eskisehir.teklifyap.model.User;
+import edu.eskisehir.teklifyap.core.Singleton;
+import edu.eskisehir.teklifyap.model.ConfirmationToken;
 import edu.eskisehir.teklifyap.model.request.LoginRequest;
+import edu.eskisehir.teklifyap.model.request.RegisterRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
+    private final ConfirmationTokenService confirmationTokenService;
 
     public String authenticate(LoginRequest request) throws Exception {
 
@@ -31,8 +34,20 @@ public class AuthenticationService {
         } catch (BadCredentialsException e) {
             throw new Exception("BadCredentialsException");
         }
-        if (userService.findByMail(request.getMail()).isPresent())
-            return jwtTokenUtil.generateToken(userService.findByMail(request.getMail()).get(), request.isRememberMe());
-        else throw new Exception("UserNotFoundException");
+
+        return jwtTokenUtil.generateToken(userService.findByMail(request.getMail()), request.isRememberMe());
+    }
+
+    public void sendRegistrationMail(RegisterRequest body) {
+
+        String token = Singleton.generateRandomString(20);
+        confirmationTokenService.save(new ConfirmationToken(token, body.getMail()));
+
+        //mail göndermek için servis işlemleri
+
+        String link = "http://localhost:8080/auth/verifyUser?token=" + token + "&mail=" + body.getMail();
+        System.out.println(link);
+
+//        mailService
     }
 }

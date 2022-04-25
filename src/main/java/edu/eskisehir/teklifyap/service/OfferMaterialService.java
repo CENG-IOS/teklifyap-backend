@@ -1,9 +1,6 @@
 package edu.eskisehir.teklifyap.service;
 
-import edu.eskisehir.teklifyap.model.Material;
-import edu.eskisehir.teklifyap.model.Offer;
-import edu.eskisehir.teklifyap.model.OfferMaterial;
-import edu.eskisehir.teklifyap.model.User;
+import edu.eskisehir.teklifyap.model.*;
 import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
 import edu.eskisehir.teklifyap.repository.OfferDao;
 import edu.eskisehir.teklifyap.repository.OfferMaterialDao;
@@ -53,7 +50,7 @@ public class OfferMaterialService {
             } catch (Exception e) {
                 offerDao.delete(finalOffer1);
             }
-            OfferMaterial offerMaterial = new OfferMaterial(material, finalOffer, materialWithPrice.getPricePerUnit());
+            OfferMaterial offerMaterial = new OfferMaterial(material, finalOffer, materialWithPrice.getUnitPrice());
             offerMaterials.add(offerMaterial);
         });
 
@@ -61,7 +58,7 @@ public class OfferMaterialService {
 
     }
 
-    public List<OfferMaterial> getMaterialsByOffer(int id) {
+    public List<ShortOfferMaterial> getMaterialsByOffer(int id) {
         return offerMaterialDao.getMaterialsByOffer(id);
     }
 
