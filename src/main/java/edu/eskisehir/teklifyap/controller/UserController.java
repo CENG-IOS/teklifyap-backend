@@ -21,11 +21,6 @@ public class UserController {
     private final UserService userService;
     private final MaterialService materialService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<ShortUserResponse>> getAll() {
-        return ResponseEntity.ok(userService.findAllShortUser());
-    }
-
 //    @PostMapping("/getByEmailAndPassword")
 //    public ResponseEntity<?> getByEmailAndPassword(@RequestBody User user) {
 //        return ResponseEntity.ok(userService.getByEmailAndPassword(user));

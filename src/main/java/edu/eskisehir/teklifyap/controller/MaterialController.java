@@ -29,11 +29,6 @@ public class MaterialController {
         return ResponseEntity.ok(materialService.findById(mid));
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<ShortMaterialResponse>> getAll() {
-        return ResponseEntity.ok(materialService.getAll());
-    }
-
     @GetMapping("/getMaterialByUser")
     public List<ShortMaterialResponse> getMaterials(@RequestParam("user") int uid) {
         return materialService.getMaterials(uid);
@@ -53,13 +48,15 @@ public class MaterialController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> delete(HttpServletRequest request, @RequestParam("material") String mid, @RequestParam("user") int uid) throws Exception {
+    public ResponseEntity<?> delete(HttpServletRequest request, @RequestParam("material") String mid, @RequestParam("user") int uid)
+            throws Exception {
         materialService.delete(mid);
         return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
     }
 
     @PutMapping
-    public ResponseEntity<?> update(HttpServletRequest request, @RequestBody Material material, @RequestParam("user") int uid) throws Exception {
+    public ResponseEntity<?> update(HttpServletRequest request, @RequestBody Material material, @RequestParam("user") int uid)
+            throws Exception {
         User user = userService.findById(uid);
         material.setUser(user);
         materialService.update(material);

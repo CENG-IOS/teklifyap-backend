@@ -1,8 +1,10 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.Offer;
+import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
 import edu.eskisehir.teklifyap.model.request.UpdateOfferRequest;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
+import edu.eskisehir.teklifyap.service.OfferMaterialService;
 import edu.eskisehir.teklifyap.service.OfferService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class OfferController {
 
     private final OfferService offerService;
+    private final OfferMaterialService offerMaterialService;
 
     @GetMapping
     public ResponseEntity<Offer> getOne(@RequestParam("offer") int fid) throws Exception {
@@ -26,9 +29,12 @@ public class OfferController {
         return ResponseEntity.ok(offerService.findById(fid));
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(offerService.getAll());
+    @PostMapping
+    public ResponseEntity<?> makeOffer(HttpServletRequest request, @RequestBody MakingOfferRequest makingOfferRequest,
+                                       @RequestParam("user") int uid) throws Exception {
+
+        offerMaterialService.makeOffer(makingOfferRequest, uid);
+        return ResponseEntity.ok(new SuccessMessage("done", request.getServletPath(), ""));
     }
 
     @GetMapping("/getOffers")

@@ -19,10 +19,6 @@ public class OfferMaterialService {
     private final UserService userService;
     private final MaterialService materialService;
 
-    public List<OfferMaterial> getAll() {
-        return offerMaterialDao.findAll();
-    }
-
     public void makeOffer(MakingOfferRequest request, int uid) throws Exception {
 
         User user = userService.findById(uid);
@@ -55,7 +51,6 @@ public class OfferMaterialService {
         });
 
         saveAll(offerMaterials);
-
     }
 
     public List<ShortOfferMaterial> getMaterialsByOffer(int id) {
@@ -64,5 +59,17 @@ public class OfferMaterialService {
 
     public List<OfferMaterial> saveAll(List<OfferMaterial> offerMaterials) {
         return offerMaterialDao.saveAll(offerMaterials);
+    }
+
+    public void delete(OfferMaterial offerMaterial) {
+        offerMaterialDao.delete(offerMaterial);
+    }
+
+    public OfferMaterial findById(int omid) throws Exception {
+        return offerMaterialDao.findById(omid).orElseThrow(() -> new Exception("NotFoundMaterialInOfferException"));
+    }
+
+    public OfferMaterial save(OfferMaterial offerMaterial) {
+        return offerMaterialDao.save(offerMaterial);
     }
 }
