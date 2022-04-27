@@ -15,17 +15,13 @@ public class OfferService {
 
     private final OfferDao offerDao;
 
-    public List<Offer> getAll() {
-        return offerDao.findAll();
-    }
-
     public List<ShortOffer> getOffersByUser(int uid, PageRequest page) {
 
         return offerDao.getOffersByUserID(uid);
     }
 
-    public Offer findById(int fid) throws Exception {
-        return offerDao.findById(fid).orElseThrow(() -> new Exception("OfferNotFoundException"));
+    public Offer findById(int oid) throws Exception {
+        return offerDao.findById(oid).orElseThrow(() -> new Exception("OfferNotFoundException"));
     }
 
     public Offer save(Offer offer) {

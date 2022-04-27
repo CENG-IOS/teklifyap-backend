@@ -1,11 +1,14 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.Offer;
+import edu.eskisehir.teklifyap.model.OfferMaterial;
+import edu.eskisehir.teklifyap.model.ShortOfferMaterial;
 import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
 import edu.eskisehir.teklifyap.model.request.UpdateOfferRequest;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.service.OfferMaterialService;
 import edu.eskisehir.teklifyap.service.OfferService;
+import edu.eskisehir.teklifyap.service.PdfGenerateService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/offer")
@@ -22,6 +28,7 @@ public class OfferController {
 
     private final OfferService offerService;
     private final OfferMaterialService offerMaterialService;
+    private final PdfGenerateService pdfGenerateService;
 
     @GetMapping
     public ResponseEntity<Offer> getOne(@RequestParam("offer") int fid) throws Exception {
@@ -102,4 +109,16 @@ public class OfferController {
 
         return ResponseEntity.ok(new SuccessMessage("updated", request.getServletPath(), ""));
     }
+
+    @GetMapping("/download")
+    public ResponseEntity<SuccessMessage> downloadPDF(@RequestParam("offer") int oid) throws Exception {
+
+        Offer offer = offerService.findById(oid);
+        List<ShortOfferMaterial> materialList = offerMaterialService.getMaterialsByOffer(oid);
+
+        pdfGenerateService.generatePdfFile(offer, materialList);
+
+        return null;
+    }
+
 }

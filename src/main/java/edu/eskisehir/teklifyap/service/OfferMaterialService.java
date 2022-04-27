@@ -38,7 +38,7 @@ public class OfferMaterialService {
         List<OfferMaterial> offerMaterials = new LinkedList<>();
         Offer finalOffer = offer;
         Offer finalOffer1 = offer;
-        request.getMaterials().parallelStream().forEach(materialWithPrice -> {
+        request.getMaterials().forEach(materialWithPrice -> {
 
             Material material = null;
             try {

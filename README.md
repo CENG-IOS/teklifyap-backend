@@ -4,7 +4,6 @@
 
 - mail service yazılması (register ve put için)
 - pdf export
-
 - filter
 - sorting
 - pagination
