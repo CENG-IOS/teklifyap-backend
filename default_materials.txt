@@ -1,0 +1,13 @@
+Beton (C25)-M3
+Beton (C30)-M3
+Kalıp İşçilik-M2
+Demir İşçilik-TON
+İnşaat Demiri-TON
+Hasır Çelik-TON
+Hafriyat Kazı-M3
+Hafriyat Dolgu-M3
+Tuğla Duvar-M2
+Kaba Sıva-M2
+Seramik Fayans Kaplama-M2
+Alçı Sıva-M2
+Beton İşçilik-M2

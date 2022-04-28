@@ -50,6 +50,14 @@ public class Material implements Serializable {
     @JsonBackReference
     private User user;
 
+    public Material(User user, String name, String unit, boolean fixed, double pricePerUnit) {
+        this.user = user;
+        this.name = name;
+        this.unit = unit;
+        this.fixed = fixed;
+        this.pricePerUnit = pricePerUnit;
+    }
+
     @Column(name = "material_name")
     private String name;
 

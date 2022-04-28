@@ -9,6 +9,7 @@ import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.security.PublicKey;
 import java.util.List;
 
 @Service
@@ -21,16 +22,11 @@ public class MaterialService {
         return materialDao.findById(mid).orElseThrow(() -> new Exception("MaterialNotFoundException"));
     }
 
-    public List<ShortMaterialResponse> getAll() {
-        return materialDao.findAllShortMaterial();
-    }
-
     public List<ShortMaterialResponse> getMaterials(int id) {
         return materialDao.findByUserId(id);
     }
 
     public void delete(String id) throws Exception {
-
         materialDao.delete(findById(Integer.parseInt(id)));
     }
 
@@ -42,9 +38,11 @@ public class MaterialService {
         return materialDao.save(material);
     }
 
-
     public List<ShortMaterialResponse> findByUserId(int uid) {
-
         return materialDao.findByUserId(uid);
+    }
+
+    public void saveAll(List<Material> materials){
+        materialDao.saveAll(materials);
     }
 }
