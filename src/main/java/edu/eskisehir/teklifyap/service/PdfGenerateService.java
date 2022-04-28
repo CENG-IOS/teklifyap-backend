@@ -53,8 +53,10 @@ public class PdfGenerateService {
             }
         }
 
+        total += sgk;
+
         kdv = total * 0.18;
-        overallTotal = kdv + total + sgk;
+        overallTotal = kdv + total;
 
         Context context = new Context();
         context.setVariable("offer", offer);
