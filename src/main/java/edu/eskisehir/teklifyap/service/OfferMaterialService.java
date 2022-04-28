@@ -32,6 +32,7 @@ public class OfferMaterialService {
         offer.setStatus(Offer.OfferStatus.PENDING);
         offer.setTotalPrice(request.getTotalPrice());
         offer.setUser(user);
+        offer.setDay(request.getDay());
 
         offer = offerDao.save(offer);
 

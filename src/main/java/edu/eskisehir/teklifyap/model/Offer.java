@@ -59,6 +59,9 @@ public class Offer implements Serializable {
     @Column(name = "offer_kdv_price")
     private double kdv;
 
+    @Column(name = "offer_day")
+    private int day;
+
     public enum OfferStatus {
         PENDING, POSITIVE, NEGATIVE
     }
