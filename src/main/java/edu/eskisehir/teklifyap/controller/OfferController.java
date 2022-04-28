@@ -1,7 +1,6 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.Offer;
-import edu.eskisehir.teklifyap.model.OfferMaterial;
 import edu.eskisehir.teklifyap.model.ShortOfferMaterial;
 import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
 import edu.eskisehir.teklifyap.model.request.UpdateOfferRequest;
@@ -12,13 +11,13 @@ import edu.eskisehir.teklifyap.service.PdfGenerateService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/offer")
@@ -111,14 +110,17 @@ public class OfferController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<SuccessMessage> downloadPDF(@RequestParam("offer") int oid) throws Exception {
+    public ResponseEntity<?> downloadPDF(@RequestParam("offer") int oid) throws Exception {
 
         Offer offer = offerService.findById(oid);
         List<ShortOfferMaterial> materialList = offerMaterialService.getMaterialsByOffer(oid);
 
-        pdfGenerateService.generatePdfFile(offer, materialList);
+        byte[] bytes = pdfGenerateService.generateOfferPdf(offer, materialList);
 
-        return null;
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(bytes);
     }
 
 }

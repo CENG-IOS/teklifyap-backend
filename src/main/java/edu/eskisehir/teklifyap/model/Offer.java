@@ -51,7 +51,7 @@ public class Offer implements Serializable {
     private LocalDate date;
 
     @Column(name = "offer_profit_rate")
-    private int profitRate;
+    private double profitRate;
 
     @Column(name = "offer_username")
     private String username;
