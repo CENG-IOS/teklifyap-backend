@@ -3,7 +3,6 @@
 ### TODOS
 
 - mail service yazılması (register ve put için)
-- pdf export
 - filter
 - sorting
 - pagination
@@ -17,3 +16,4 @@
 - material crud işlemlerinin kontrolü
 - get offer
 - put offer
+- pdf export
