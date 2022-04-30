@@ -39,7 +39,9 @@ public class AuthenticationController {
     @PostMapping
     public ResponseEntity<SuccessMessage> register(HttpServletRequest request, @RequestBody RegisterRequest body) throws Exception {
 
-        if (body.getName() == null || body.getMail() == null || body.getPassword() == null || body.getPassword().length() < 8)
+        System.out.println(body);
+
+        if (body.getName() == null || body.getMail() == null || body.getPassword() == null || body.getPassword().length() < 6)
             throw new Exception("InvalidParametersException");
         if (!Singleton.validate(body.getMail()))
             throw new Exception("InvalidMailException");
@@ -66,8 +68,10 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(HttpServletRequest request, @RequestBody LoginRequest loginRequest)
             throws Exception {
+
+        User user = userService.findByMail(loginRequest.getMail());
         String token = authenticationService.authenticate(loginRequest);
-        return ResponseEntity.ok(new AuthenticationResponse("200", token, request.getServletPath()));
+        return ResponseEntity.ok(new AuthenticationResponse("200", token,user.getId(), request.getServletPath()));
     }
 
     @DeleteMapping
@@ -94,9 +98,8 @@ public class AuthenticationController {
 
             confirmationTokenService.delete(validate.get());
 
-            return ResponseEntity.ok(new SuccessMessage("confirmed",request.getServletPath(),""));
-        }
-        else throw new Exception("Error");
+            return ResponseEntity.ok(new SuccessMessage("confirmed", request.getServletPath(), ""));
+        } else throw new Exception("Error");
 
     }
 
