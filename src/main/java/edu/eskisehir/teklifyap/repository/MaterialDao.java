@@ -18,4 +18,6 @@ public interface MaterialDao extends JpaRepository<Material, Integer> {
     @Query("select new edu.eskisehir.teklifyap.model.response.ShortMaterialResponse(m) from Material m")
     List<ShortMaterialResponse> findAllShortMaterial();
 
+    Material deleteById(int id);
+
 }

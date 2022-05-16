@@ -29,7 +29,7 @@ public class OfferMaterialService {
         offer.setCompanyName(request.getToWho());
         offer.setDate(request.getDate());
         offer.setProfitRate(request.getProfitRate());
-        offer.setStatus(Offer.OfferStatus.PENDING);
+        offer.setStatus(false);
         offer.setTotalPrice(request.getTotalPrice());
         offer.setUser(user);
         offer.setDay(request.getDay());
@@ -37,29 +37,22 @@ public class OfferMaterialService {
         offer = offerDao.save(offer);
 
         List<OfferMaterial> offerMaterials = new LinkedList<>();
-        Offer finalOffer = offer;
-        Offer finalOffer1 = offer;
-        request.getMaterials().forEach(materialWithPrice -> {
 
-            Material material = null;
-            try {
-                material = materialService.findById(materialWithPrice.getId());
-            } catch (Exception e) {
-                offerDao.delete(finalOffer1);
-            }
-            OfferMaterial offerMaterial = new OfferMaterial(material, finalOffer, materialWithPrice.getUnitPrice());
+        for (int i = 0; i < request.getMaterials().size(); i++) {
+            Material material = materialService.findById(request.getMaterials().get(i).getId());
+            OfferMaterial offerMaterial = new OfferMaterial(material, offer, request.getMaterials().get(i).getUnitQuantity(), material.getPricePerUnit());
             offerMaterials.add(offerMaterial);
-        });
+        }
 
         saveAll(offerMaterials);
     }
 
-    public List<ShortOfferMaterial> getMaterialsByOffer(int id) {
-        return offerMaterialDao.getMaterialsByOffer(id);
-    }
-
     public List<OfferMaterial> saveAll(List<OfferMaterial> offerMaterials) {
         return offerMaterialDao.saveAll(offerMaterials);
+    }
+
+    public List<OfferMaterial> findByOffer(Offer offer) {
+        return offerMaterialDao.findByOffer(offer);
     }
 
     public void delete(OfferMaterial offerMaterial) {

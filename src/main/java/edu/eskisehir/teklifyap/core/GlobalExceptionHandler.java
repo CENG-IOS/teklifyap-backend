@@ -22,8 +22,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(details, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<?> handleException(Exception exception, WebRequest request) {
+
+        log.error("Exception: {}", exception.getMessage());
 
         ExceptionDetailResponse details = new ExceptionDetailResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 exception.getMessage().split("Exception")[0], request.getDescription(false).split("uri=")[1]);

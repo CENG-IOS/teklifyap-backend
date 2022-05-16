@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.eskisehir.teklifyap.model.request.AddingMaterialRequest;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -40,6 +37,14 @@ public class Material implements Serializable {
         this.pricePerUnit = pricePerUnit;
     }
 
+    public Material(User user, String name, String unit, boolean fixed, double pricePerUnit) {
+        this.user = user;
+        this.name = name;
+        this.unit = unit;
+        this.fixed = fixed;
+        this.pricePerUnit = pricePerUnit;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "material_id")
@@ -50,21 +55,13 @@ public class Material implements Serializable {
     @JsonBackReference
     private User user;
 
-    public Material(User user, String name, String unit, boolean fixed, double pricePerUnit) {
-        this.user = user;
-        this.name = name;
-        this.unit = unit;
-        this.fixed = fixed;
-        this.pricePerUnit = pricePerUnit;
-    }
-
     @Column(name = "material_name")
     private String name;
 
     @Column(name = "material_unit")
     private String unit;
 
-    @Column(name = "material_is_verified")
+    @Column(name = "material_is_deleted")
     private boolean deleted;
 
     @Column(name = "is_fixed")

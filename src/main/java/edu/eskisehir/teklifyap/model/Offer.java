@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Table(name = "offer")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -42,7 +41,7 @@ public class Offer implements Serializable {
     private String companyName;
 
     @Column(name = "offer_status")
-    private OfferStatus status;
+    private boolean status;
 
     @Column(name = "offer_total_price")
     private double totalPrice;
@@ -56,13 +55,6 @@ public class Offer implements Serializable {
     @Column(name = "offer_username")
     private String username;
 
-    @Column(name = "offer_kdv_price")
-    private double kdv;
-
     @Column(name = "offer_day")
     private int day;
-
-    public enum OfferStatus {
-        PENDING, POSITIVE, NEGATIVE
-    }
 }

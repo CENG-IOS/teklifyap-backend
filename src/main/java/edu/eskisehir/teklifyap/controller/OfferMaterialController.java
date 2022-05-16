@@ -4,7 +4,7 @@ import edu.eskisehir.teklifyap.model.Material;
 import edu.eskisehir.teklifyap.model.Offer;
 import edu.eskisehir.teklifyap.model.OfferMaterial;
 import edu.eskisehir.teklifyap.model.request.AddingOfferMaterialRequest;
-import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
+import edu.eskisehir.teklifyap.model.response.OfferResponse;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
 import edu.eskisehir.teklifyap.service.MaterialService;
 import edu.eskisehir.teklifyap.service.OfferMaterialService;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/offerMaterial")
@@ -26,10 +27,23 @@ public class OfferMaterialController {
     private final MaterialService materialService;
 
     //teklifin detaylarını görüntülemeye çalışırken kullanılacak. Tekliflerim sayfasında inceleye bastığında çalışır.
-    @GetMapping("/getMaterialsByOffer")
-    public ResponseEntity<?> getMaterialsByOffer(@RequestParam("offer") int oid) {
+    @GetMapping()
+    public ResponseEntity<?> getMaterialsByOffer(@RequestParam("offer") int oid) throws Exception {
 
-        return ResponseEntity.ok(offerMaterialService.getMaterialsByOffer(oid));
+        Offer offer = offerService.findById(oid);
+        List<OfferMaterial> offerMaterials = offerMaterialService.findByOffer(offer);
+
+        for (int i = 0; i < offerMaterials.size(); i++) {
+            offerMaterials.get(i).setOffer(null);
+        }
+
+        OfferResponse offerResponse = new OfferResponse();
+        offerResponse.setId(offer.getId());
+        offerResponse.setTitle(offer.getTitle());
+        offerResponse.setDate(offer.getDate());
+        offerResponse.setMaterials(offerMaterials);
+
+        return ResponseEntity.ok(offerResponse);
     }
 
     @DeleteMapping
@@ -47,7 +61,7 @@ public class OfferMaterialController {
 
         Offer offer = offerService.findById(request1.getOid());
         Material material = materialService.findById(request1.getMid());
-        OfferMaterial offerMaterial = new OfferMaterial(material, offer, request1.getUnitPrice());
+        OfferMaterial offerMaterial = new OfferMaterial(material, offer, request1.getUnitQuantity(), request1.getPricePerUnit());
         offerMaterialService.save(offerMaterial);
 
         return ResponseEntity.ok(new SuccessMessage("added", request.getServletPath(), ""));

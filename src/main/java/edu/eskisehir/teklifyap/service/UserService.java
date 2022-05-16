@@ -42,8 +42,8 @@ public class UserService implements UserDetailsService {
         return this.userDao.getById(id);
     }
 
-    public void save(User user) {
-        User updated = userDao.save(user);
+    public User save(User user) {
+        return userDao.save(user);
     }
 
     @Override

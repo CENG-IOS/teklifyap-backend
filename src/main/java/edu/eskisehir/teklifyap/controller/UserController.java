@@ -1,6 +1,8 @@
 package edu.eskisehir.teklifyap.controller;
 
+import edu.eskisehir.teklifyap.config.security.PasswordEncoder;
 import edu.eskisehir.teklifyap.model.User;
+import edu.eskisehir.teklifyap.model.request.UpdateUserRequest;
 import edu.eskisehir.teklifyap.model.response.ShortMaterialResponse;
 import edu.eskisehir.teklifyap.model.response.ShortUserResponse;
 import edu.eskisehir.teklifyap.model.response.SuccessMessage;
@@ -15,36 +17,43 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin
 @AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final MaterialService materialService;
+    private final PasswordEncoder passwordEncoder;
 
-//    @PostMapping("/getByEmailAndPassword")
-//    public ResponseEntity<?> getByEmailAndPassword(@RequestBody User user) {
-//        return ResponseEntity.ok(userService.getByEmailAndPassword(user));
-//    }
-
-    @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestBody User user) {
-        return ResponseEntity.ok(userService.add(user));
+    @GetMapping
+    public ResponseEntity<?> getUserProfile(@RequestParam("user") int uid) throws Exception {
+        User user = userService.findById(uid);
+        ShortUserResponse response = new ShortUserResponse(user);
+        return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/userInfo")
-//    public ResponseEntity<List<User>> userInfo(@RequestBody int userInfo) {
-//        return ResponseEntity.ok(userService.userInfo(userInfo));
-//    }
+    @PutMapping()
+    public ResponseEntity<?> save(HttpServletRequest request, @RequestParam("user") int uid, @RequestBody UpdateUserRequest user)
+            throws Exception {
 
-    @PostMapping("/userProfile")
-    public ResponseEntity<?> getUserProfile(@RequestBody User user) {
-        return ResponseEntity.ok(userService.getUserProfile(user));
-    }
+        User updated = userService.findById(uid);
 
-    @PostMapping("/updateInformation")
-    public ResponseEntity<?> save(@RequestBody User user) {
-        userService.save(user);
-        return ResponseEntity.ok(new SuccessMessage("saved", "", ""));
+        if (user.getPassword() != null) {
+            updated.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(user.getPassword()));
+        }
+        if (user.getEmail() != null) {
+            updated.setMail(user.getEmail());
+        }
+        if (user.getName() != null) {
+            updated.setName(user.getName());
+        }
+        if (user.getSurname() != null) {
+            updated.setSurname(user.getSurname());
+        }
+
+        userService.save(updated);
+
+        return ResponseEntity.ok(new SuccessMessage("saved", request.getServletPath(), ""));
     }
 
     @PostMapping("/assignList")
@@ -52,15 +61,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserProfile(user));
     }
 
-    @GetMapping("/getAll/{id}")
-    public ResponseEntity<User> getByUserID(@PathVariable int id) {
-        return ResponseEntity.ok(userService.getById(id));
-    }
-
-    @PostMapping("/getFullName")
-    public ResponseEntity<String> getFullName(@RequestBody User user) {
-        User a = userService.getById(user.getId());
-        return ResponseEntity.ok(a.FullName());
+    @GetMapping("/getFullName")
+    public ResponseEntity<?> getFullName(HttpServletRequest request, @RequestParam("user") int uid) {
+        User a = userService.getById(uid);
+        return ResponseEntity.ok(new SuccessMessage("done", request.getServletPath(), a.FullName()));
     }
 
     @GetMapping("/getMaterials")

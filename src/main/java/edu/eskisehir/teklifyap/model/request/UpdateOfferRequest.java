@@ -1,6 +1,5 @@
 package edu.eskisehir.teklifyap.model.request;
 
-import edu.eskisehir.teklifyap.model.Offer;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -10,7 +9,7 @@ public class UpdateOfferRequest {
 
     private String title;
     private String companyName;
-    private Offer.OfferStatus status;
+    private boolean status;
     private Double totalPrice;
     private LocalDate date;
     private Integer profitRate;

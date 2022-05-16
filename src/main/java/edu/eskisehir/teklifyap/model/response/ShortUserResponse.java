@@ -20,7 +20,8 @@ public class ShortUserResponse {
         this.mail = user.getMail();
         this.creationDate = user.getCreationDate();
         this.confirmed = user.isConfirmed();
-        this.materialList = user.getMaterialList();
+        if (user.getMaterialList() != null)
+            this.materialList = user.getMaterialList();
     }
 
     private int id;

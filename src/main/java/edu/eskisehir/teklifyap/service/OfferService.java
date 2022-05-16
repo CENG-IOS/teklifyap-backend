@@ -27,4 +27,8 @@ public class OfferService {
     public Offer save(Offer offer) {
         return offerDao.save(offer);
     }
+
+    public void delete(int fid) {
+        offerDao.deleteById(fid);
+    }
 }

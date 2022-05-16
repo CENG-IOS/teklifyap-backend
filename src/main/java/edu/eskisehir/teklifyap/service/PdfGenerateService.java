@@ -44,12 +44,12 @@ public class PdfGenerateService {
                 row.setUnit(materialList.get(i).getMaterial().getUnit());
                 row.setPricePerUnit(formatter.format(materialList.get(i).getMaterial().getPricePerUnit()).replace("TRY","").replace(".",","));
                 row.setProfitRate((offer.getProfitRate() + 100) / 100);
-                row.setUnitPrice(formatter.format(materialList.get(i).getUnitPrice()).replace("TRY","").replace(".",","));
-                row.setTotal(formatter.format(materialList.get(i).getMaterial().getPricePerUnit() * row.getProfitRate() * materialList.get(i).getUnitPrice()).replace("TRY","").replace(".",","));
-                total += materialList.get(i).getMaterial().getPricePerUnit() * row.getProfitRate() * materialList.get(i).getUnitPrice();
+                row.setUnitPrice(formatter.format(materialList.get(i).getUnitQuantity()).replace("TRY","").replace(".",","));
+                row.setTotal(formatter.format(materialList.get(i).getMaterial().getPricePerUnit() * row.getProfitRate() * materialList.get(i).getUnitQuantity()).replace("TRY","").replace(".",","));
+                total += materialList.get(i).getMaterial().getPricePerUnit() * row.getProfitRate() * materialList.get(i).getUnitQuantity();
                 materialTableRowList.add(row);
             } else {
-                sgk = materialList.get(i).getUnitPrice();
+                sgk = materialList.get(i).getUnitQuantity();
             }
         }
 

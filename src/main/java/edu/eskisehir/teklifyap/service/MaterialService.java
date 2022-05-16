@@ -26,8 +26,8 @@ public class MaterialService {
         return materialDao.findByUserId(id);
     }
 
-    public void delete(String id) throws Exception {
-        materialDao.delete(findById(Integer.parseInt(id)));
+    public Material delete(int id) {
+        return materialDao.deleteById(id);
     }
 
     public Material save(Material material) {

@@ -39,8 +39,6 @@ public class AuthenticationController {
     @PostMapping
     public ResponseEntity<SuccessMessage> register(HttpServletRequest request, @RequestBody RegisterRequest body) throws Exception {
 
-        System.out.println(body);
-
         if (body.getName() == null || body.getMail() == null || body.getPassword() == null || body.getPassword().length() < 6)
             throw new Exception("InvalidParametersException");
         if (!Singleton.validate(body.getMail()))
@@ -57,7 +55,7 @@ public class AuthenticationController {
             materials.add(material);
         }
 
-        Material sgk = new Material(user, "SGK Stopaj Bedeli", "-", true, 1);
+        Material sgk = new Material(user, "SGK Stopaj Bedeli", "-", true, 0);
         materials.add(sgk);
 
         materialService.saveAll(materials);
@@ -101,6 +99,11 @@ public class AuthenticationController {
             return ResponseEntity.ok(new SuccessMessage("confirmed", request.getServletPath(), ""));
         } else throw new Exception("Error");
 
+    }
+
+    @GetMapping("/index")
+    public ResponseEntity<SuccessMessage> index(HttpServletRequest request) {
+        return ResponseEntity.ok(new SuccessMessage("Welcome!", request.getServletPath(), ""));
     }
 
 

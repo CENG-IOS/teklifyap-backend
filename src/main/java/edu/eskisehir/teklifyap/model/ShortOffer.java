@@ -12,10 +12,12 @@ public class ShortOffer {
     private int id;
     private String title;
     private LocalDate date;
+    private boolean status;
 
     public ShortOffer(Offer offer){
         this.id = offer.getId();
         this.title = offer.getTitle();
         this.date = offer.getDate();
+        this.status = offer.isStatus();
     }
 }

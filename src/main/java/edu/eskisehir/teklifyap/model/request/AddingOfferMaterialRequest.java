@@ -9,5 +9,6 @@ public class AddingOfferMaterialRequest {
 
     private int oid;
     private int mid;
-    private double unitPrice;
+    private double unitQuantity;
+    private double pricePerUnit;
 }

@@ -43,6 +43,12 @@ public class OfferController {
         return ResponseEntity.ok(new SuccessMessage("done", request.getServletPath(), ""));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<SuccessMessage> deleteOffer(HttpServletRequest request, @RequestParam("offer") int fid) {
+        offerService.delete(fid);
+        return ResponseEntity.ok(new SuccessMessage("deleted", request.getServletPath(), ""));
+    }
+
     @GetMapping("/getOffers")
     public ResponseEntity<?> getOffersByUser(HttpServletRequest request, @RequestParam("user") int uid,
                                              @RequestParam(defaultValue = "0", value = "page") int offset,
@@ -85,9 +91,6 @@ public class OfferController {
         if (update.getCompanyName() != null) {
             offer.setCompanyName(update.getCompanyName());
         }
-        if (update.getStatus() != null) {
-            offer.setStatus(update.getStatus());
-        }
         if (update.getTotalPrice() != null) {
             offer.setTotalPrice(update.getTotalPrice());
         }
@@ -100,27 +103,32 @@ public class OfferController {
         if (update.getUsername() != null) {
             offer.setUsername(update.getUsername());
         }
-        if (update.getKdv() != null) {
-            offer.setKdv(update.getKdv());
-        }
 
         offerService.save(offer);
 
         return ResponseEntity.ok(new SuccessMessage("updated", request.getServletPath(), ""));
     }
 
+    @PutMapping("/changeStatus")
+    public ResponseEntity<SuccessMessage> changeStatus(HttpServletRequest request, @RequestParam("offer") int fid) throws Exception {
+        Offer offer = offerService.findById(fid);
+        offer.setStatus(!offer.isStatus());
+        offerService.save(offer);
+        return ResponseEntity.ok(new SuccessMessage("changed", request.getServletPath(), ""));
+    }
+
     @GetMapping("/download")
     public ResponseEntity<?> downloadPDF(@RequestParam("offer") int oid) throws Exception {
 
         Offer offer = offerService.findById(oid);
-        List<ShortOfferMaterial> materialList = offerMaterialService.getMaterialsByOffer(oid);
-
-        byte[] bytes = pdfGenerateService.generateOfferPdf(offer, materialList);
+//        List<ShortOfferMaterial> materialList = offerMaterialService.getMaterialsByOffer(oid);
+//
+//        byte[] bytes = pdfGenerateService.generateOfferPdf(offer, materialList);
 
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
-                .body(bytes);
+                .body("");
     }
 
 }
