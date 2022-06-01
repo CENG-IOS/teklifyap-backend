@@ -33,6 +33,7 @@ public class OfferMaterialService {
         offer.setTotalPrice(request.getTotalPrice());
         offer.setUser(user);
         offer.setDay(request.getDay());
+        offer.setSgk(request.getSgk());
 
         offer = offerDao.save(offer);
 

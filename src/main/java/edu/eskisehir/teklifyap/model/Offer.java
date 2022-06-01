@@ -57,4 +57,6 @@ public class Offer implements Serializable {
 
     @Column(name = "offer_day")
     private int day;
+
+    private double sgk;
 }

@@ -30,7 +30,7 @@ public class PdfGenerateService {
 
         List<MaterialTableRow> materialTableRowList = new LinkedList<>();
 
-        double sgk = 0;
+        double sgk = offer.getSgk();
         double total = 0;
         double kdv = 0;
         double overallTotal = 0;
@@ -42,14 +42,12 @@ public class PdfGenerateService {
                 row.setNo(i + 1);
                 row.setName(materialList.get(i).getMaterial().getName());
                 row.setUnit(materialList.get(i).getMaterial().getUnit());
-                row.setPricePerUnit(formatter.format(materialList.get(i).getMaterial().getPricePerUnit()).replace("TRY","").replace(".",","));
+                row.setPricePerUnit(formatter.format(materialList.get(i).getMaterial().getPricePerUnit()).replace("TRY", "").replace(".", ","));
                 row.setProfitRate((offer.getProfitRate() + 100) / 100);
-                row.setUnitPrice(formatter.format(materialList.get(i).getUnitQuantity()).replace("TRY","").replace(".",","));
-                row.setTotal(formatter.format(materialList.get(i).getMaterial().getPricePerUnit() * row.getProfitRate() * materialList.get(i).getUnitQuantity()).replace("TRY","").replace(".",","));
+                row.setUnitPrice(formatter.format(materialList.get(i).getUnitQuantity()).replace("TRY", "").replace(".", ","));
+                row.setTotal(formatter.format(materialList.get(i).getMaterial().getPricePerUnit() * row.getProfitRate() * materialList.get(i).getUnitQuantity()).replace("TRY", "").replace(".", ","));
                 total += materialList.get(i).getMaterial().getPricePerUnit() * row.getProfitRate() * materialList.get(i).getUnitQuantity();
                 materialTableRowList.add(row);
-            } else {
-                sgk = materialList.get(i).getUnitQuantity();
             }
         }
 
@@ -61,10 +59,10 @@ public class PdfGenerateService {
         Context context = new Context();
         context.setVariable("offer", offer);
         context.setVariable("materials", materialTableRowList);
-        context.setVariable("sgk", formatter.format(sgk).replace("TRY","").replace(".",","));
-        context.setVariable("total", formatter.format(total).replace("TRY","").replace(".",","));
-        context.setVariable("kdv", formatter.format(kdv).replace("TRY","").replace(".",","));
-        context.setVariable("overall", formatter.format(overallTotal).replace("TRY","").replace(".",","));
+        context.setVariable("sgk", formatter.format(sgk).replace("TRY", "").replace(".", ","));
+        context.setVariable("total", formatter.format(total).replace("TRY", "").replace(".", ","));
+        context.setVariable("kdv", formatter.format(kdv).replace("TRY", "").replace(".", ","));
+        context.setVariable("overall", formatter.format(overallTotal).replace("TRY", "").replace(".", ","));
         context.setVariable("date", date);
         String orderHtml = templateEngine.process("teklif", context);
 

@@ -15,7 +15,12 @@ public class OfferResponse {
 
     private int id;
     private String title;
+    private boolean status;
     private double profitRate;
     private LocalDate date;
+    private double price;
+    private double kdv;
+    private double sgk;
+    private double totalPrice;
     private List<OfferMaterial> materials;
 }

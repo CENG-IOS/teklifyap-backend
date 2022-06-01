@@ -1,6 +1,7 @@
 package edu.eskisehir.teklifyap.controller;
 
 import edu.eskisehir.teklifyap.model.Offer;
+import edu.eskisehir.teklifyap.model.OfferMaterial;
 import edu.eskisehir.teklifyap.model.ShortOfferMaterial;
 import edu.eskisehir.teklifyap.model.request.MakingOfferRequest;
 import edu.eskisehir.teklifyap.model.request.UpdateOfferRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -121,14 +123,20 @@ public class OfferController {
     public ResponseEntity<?> downloadPDF(@RequestParam("offer") int oid) throws Exception {
 
         Offer offer = offerService.findById(oid);
-//        List<ShortOfferMaterial> materialList = offerMaterialService.getMaterialsByOffer(oid);
-//
-//        byte[] bytes = pdfGenerateService.generateOfferPdf(offer, materialList);
+        List<OfferMaterial> materialList = offerMaterialService.findByOffer(offer);
+        List<ShortOfferMaterial> shortMaterialList = new ArrayList<>();
+
+        for (OfferMaterial offerMaterial : materialList) {
+            ShortOfferMaterial shortOfferMaterial = new ShortOfferMaterial(offerMaterial);
+            shortMaterialList.add(shortOfferMaterial);
+        }
+
+        byte[] bytes = pdfGenerateService.generateOfferPdf(offer, shortMaterialList);
 
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
-                .body("");
+                .body(bytes);
     }
 
 }

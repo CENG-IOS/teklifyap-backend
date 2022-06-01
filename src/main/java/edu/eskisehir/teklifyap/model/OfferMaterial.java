@@ -41,4 +41,6 @@ public class OfferMaterial {
 
     @Column(name = "price_per_unit")
     private double pricePerUnit;
+
+    private double price;
 }

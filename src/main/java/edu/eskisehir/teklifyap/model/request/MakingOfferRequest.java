@@ -15,6 +15,7 @@ public class MakingOfferRequest {
     private LocalDate date;
     private int profitRate;
     private double totalPrice;
+    private double sgk;
     private int day;
     private List<MaterialWithPrice> materials;
 }

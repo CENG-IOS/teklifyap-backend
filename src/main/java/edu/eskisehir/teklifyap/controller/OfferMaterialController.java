@@ -32,9 +32,15 @@ public class OfferMaterialController {
 
         Offer offer = offerService.findById(oid);
         List<OfferMaterial> offerMaterials = offerMaterialService.findByOffer(offer);
+        double profit = offer.getProfitRate() == 0 ? 1 : (offer.getProfitRate() + 100) / 100;
 
-        for (int i = 0; i < offerMaterials.size(); i++) {
-            offerMaterials.get(i).setOffer(null);
+        double price = 0;
+        for (OfferMaterial offerMaterial : offerMaterials) {
+            offerMaterial.setOffer(null);
+            offerMaterial.setPrice(offerMaterial.getUnitQuantity() * offerMaterial.getPricePerUnit() * profit);
+            price += offerMaterial.getPrice();
+            offerMaterial.setPricePerUnit(offerMaterial.getPricePerUnit());
+            offerMaterial.setUnitQuantity(offerMaterial.getUnitQuantity());
         }
 
         OfferResponse offerResponse = new OfferResponse();
@@ -42,6 +48,12 @@ public class OfferMaterialController {
         offerResponse.setTitle(offer.getTitle());
         offerResponse.setDate(offer.getDate());
         offerResponse.setMaterials(offerMaterials);
+        offerResponse.setProfitRate(offer.getProfitRate());
+        offerResponse.setPrice(price);
+        offerResponse.setKdv(price * 0.18);
+        offerResponse.setSgk(offer.getSgk());
+        offerResponse.setTotalPrice(price + offerResponse.getKdv() + offerResponse.getSgk());
+        offerResponse.setStatus(offer.isStatus());
 
         return ResponseEntity.ok(offerResponse);
     }
