@@ -33,8 +33,6 @@ public class AuthenticationController {
     private final BlacklistService blackListService;
     private final ConfirmationTokenService confirmationTokenService;
     private final MaterialService materialService;
-    private final OfferService offerService;
-    private final OfferMaterialService offerMaterialService;
 
     @PostMapping
     public ResponseEntity<SuccessMessage> register(HttpServletRequest request, @RequestBody RegisterRequest body) throws Exception {

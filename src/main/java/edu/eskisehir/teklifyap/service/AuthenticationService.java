@@ -13,6 +13,10 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -22,6 +26,7 @@ public class AuthenticationService {
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final ConfirmationTokenService confirmationTokenService;
+    private final MailService mailService;
 
     public String authenticate(LoginRequest request) throws Exception {
 
@@ -38,16 +43,17 @@ public class AuthenticationService {
         return jwtTokenUtil.generateToken(userService.findByMail(request.getMail()), request.isRememberMe());
     }
 
-    public void sendRegistrationMail(RegisterRequest body) {
+    public void sendRegistrationMail(RegisterRequest body) throws MessagingException {
 
         String token = Singleton.generateRandomString(20);
         confirmationTokenService.save(new ConfirmationToken(token, body.getMail()));
 
-        //mail göndermek için servis işlemleri
-
         String link = "http://localhost:8080/auth/verifyUser?token=" + token + "&mail=" + body.getMail();
         System.out.println(link);
 
-//        mailService
+        Map<String, String> content = new HashMap<>();
+        content.put("name", body.getName());
+        content.put("link", link);
+        mailService.sendMail(body.getMail(), "Teklif Yap - Hesap Onayı", "ConfirmationMail", content);
     }
 }
