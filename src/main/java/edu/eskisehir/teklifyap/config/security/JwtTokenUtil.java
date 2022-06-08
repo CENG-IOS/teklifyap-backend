@@ -1,11 +1,14 @@
 package edu.eskisehir.teklifyap.config.security;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import io.jsonwebtoken.impl.crypto.MacProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -17,12 +20,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -2550185165626007488L;
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     public static final long JWT_TOKEN_VALIDITY_REMEMBER_ME = 5 * 60 * 60 * 7;
 
     @Value("${jwt.secret}")
-    private String secret;
+    static Key secret = MacProvider.generateKey();
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -42,7 +46,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret.getEncoded()).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -65,11 +69,11 @@ public class JwtTokenUtil implements Serializable {
         if (!rememberMe)
             return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                     .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                    .signWith(SignatureAlgorithm.HS512, secret).compact();
+                    .signWith(SignatureAlgorithm.HS512, secret.getEncoded()).compact();
         else
             return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                     .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_REMEMBER_ME * 1000))
-                    .signWith(SignatureAlgorithm.HS512, secret).compact();
+                    .signWith(SignatureAlgorithm.HS512, secret.getEncoded()).compact();
     }
 
     public Boolean canTokenBeRefreshed(String token) {
