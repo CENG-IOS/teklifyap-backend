@@ -46,6 +46,9 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
+        for (int i = 0; i < secret.getEncoded().length; i++) {
+            System.out.print(secret.getEncoded()[i]);
+        }
         return Jwts.parser().setSigningKey(secret.getEncoded()).parseClaimsJws(token).getBody();
     }
 
@@ -66,14 +69,14 @@ public class JwtTokenUtil implements Serializable {
 
     private String doGenerateToken(Map<String, Object> claims, String subject, boolean rememberMe) {
 
-        if (!rememberMe)
-            return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                    .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                    .signWith(SignatureAlgorithm.HS512, secret.getEncoded()).compact();
-        else
-            return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                    .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY_REMEMBER_ME * 1000))
-                    .signWith(SignatureAlgorithm.HS512, secret.getEncoded()).compact();
+        for (int i = 0; i < secret.getEncoded().length; i++) {
+            System.out.print(secret.getEncoded()[i]);
+        }
+        System.out.println();
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .signWith(SignatureAlgorithm.HS512, secret.getEncoded()).compact();
+
     }
 
     public Boolean canTokenBeRefreshed(String token) {
