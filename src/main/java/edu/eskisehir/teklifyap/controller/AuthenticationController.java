@@ -101,7 +101,7 @@ public class AuthenticationController {
 
     @GetMapping("/index")
     public ResponseEntity<SuccessMessage> index(HttpServletRequest request) {
-        return ResponseEntity.ok(new SuccessMessage("Welcome!", request.getServletPath(), ""));
+        return ResponseEntity.ok(new SuccessMessage("Welcome to Teklifyap!", request.getServletPath(), ""));
     }
 
 
