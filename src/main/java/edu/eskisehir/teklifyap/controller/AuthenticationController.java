@@ -46,7 +46,9 @@ public class AuthenticationController {
         log.info("User registration...");
 
         List<Material> materials = new LinkedList<>();
-        List<String> allLines = Files.readAllLines(Paths.get("default_materials.txt"));
+        List<String> allLines = List.of("Beton (C25)-M3", "Beton (C30)-M3", "Kalıp İşçilik-M2", "Demir İşçilik-TON",
+                "İnşaat Demiri-TON", "Hasır Çelik-TON", "Hafriyat Kazı-M3", "Hafriyat Dolgu-M3", "Tuğla Duvar-M2",
+                "Kaba Sıva-M2", "Seramik Fayans Kaplama-M2", "Alçı Sıva-M2", "Beton İşçilik-M2");
         for (String line : allLines) {
             String[] arr = line.split("-");
             Material material = new Material(user, arr[0], arr[1], false, 0);
@@ -67,7 +69,7 @@ public class AuthenticationController {
 
         User user = userService.findByMail(loginRequest.getMail());
         String token = authenticationService.authenticate(loginRequest);
-        return ResponseEntity.ok(new AuthenticationResponse("200", token,user.getId(), request.getServletPath()));
+        return ResponseEntity.ok(new AuthenticationResponse("200", token, user.getId(), request.getServletPath()));
     }
 
     @DeleteMapping
