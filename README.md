@@ -2,7 +2,6 @@
 
 ### TODOS
 
-- mail service yazılması (register ve put için)
 - filter
 - sorting
 - pagination
