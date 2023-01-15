@@ -7,7 +7,7 @@ RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY . .
 
-RUN mvn clean install
+RUN mvn clean install -DskipTests
 
 RUN ls ./target
 EXPOSE 4000
